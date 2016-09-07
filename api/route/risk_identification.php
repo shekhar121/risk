@@ -18,7 +18,7 @@ $app->get('/master_event', function ($request, $response, $args) {
 	foreach ($cursor as $entry) {
 	    $data['event'][]= array($entry->{'_id'}->__toString(), $entry['event-category'], $entry['event-value']);
 	}
-
+	$response->header('Access-Control-Allow-Origin', '*');
 	return $response->withJson($data);
 });
 
@@ -30,7 +30,7 @@ $app->get('/master_impact', function ($request, $response, $args) {
 	foreach ($cursor as $entry) {
 	    $data[]= array($entry->{'_id'}->__toString(), $entry['impact-category'], $entry['impact-value']);
 	}
-
+	$response->header('Access-Control-Allow-Origin', '*');
 	return $response->withJson($data);
 });
 
@@ -42,7 +42,7 @@ $app->get('/master_vulnerability', function ($request, $response, $args) {
 	foreach ($cursor as $entry) {
 	    $data[]= array($entry->{'_id'}->__toString(), $entry['vulnerability-category'], $entry['vulnerability-value']);
 	}
-
+	$response->header('Access-Control-Allow-Origin', '*');
 	return $response->withJson($data);
 });
 
@@ -61,6 +61,7 @@ $app->post('/risk_identification', function ($request, $response, $args) {
 	//printf("Inserted %d document(s)\n", $insertOneResult->getInsertedCount());
 	//var_dump($insertOneResult->getInsertedId());
 	//$data['status'] = 'inserted';
+	$response->header('Access-Control-Allow-Origin', '*');
 	return $response->withJson($data);
 });
 
@@ -103,6 +104,7 @@ $entry->{'_id'}->__toString()
 	//var_dump($insertOneResult->getInsertedId());
 	//$data['status'] = 'inserted';
 	$insertOneResult = $collection->insertOne($data);
+	$response->header('Access-Control-Allow-Origin', '*');
 	return $response->withJson($insertOneResult->getInsertedCount());
 });
 
@@ -116,5 +118,6 @@ $app->post('/delete_risk_identification', function ($request, $response, $args) 
 
 	//printf("Deleted %d document(s)\n", $deleteResult->getDeletedCount());
 	//$insertOneResult = $collection->insertOne($data);
+	$response->header('Access-Control-Allow-Origin', '*');
 	return $response->withJson($deleteResult->getDeletedCount());
 });
