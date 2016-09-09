@@ -821,6 +821,34 @@ $( document ).ready(function() {
             <!-- /basic modal -->
             
             
+            <!-- Basic modal -->
+            <div id="view_risk_modal" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h5 class="modal-title">Risk Identifiction</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" id="risk_view_items">
+                                <!-- <div class="col-md-12">
+                                    <div class="form-group" > 
+                                
+          
+                                    </div>  
+
+                                </div> -->
+                             </div>
+                                    
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /basic modal -->
+
             <style type="text/css">
                 .bootstrap-select.btn-group .dropdown-menu > li > a .text {
                    
@@ -884,6 +912,35 @@ $(document).ready(function() {
                 table_data.ajax.reload();
                 $(".flashMsg").show();
                 $(".flashMsg").slideUp(2000);
+            });
+
+    })
+     $('#risk_table').on('click','tbody button.risk_view', function(){ 
+        //console.log(this); //console.log(table_data);
+        var rid = $(this).attr('rid');
+        //alert(rid);
+        //$('#'+rid).remove();
+            $.ajax({
+              method: "POST",
+              url: "<?php echo $config['base_url'];?>api/view_risk_identification",
+              data: { id: rid }
+            })
+            .done(function( data) {
+                console.log(data);
+                $('#view_risk_modal').modal('show');
+                var html = '<div class="col-md-12">';
+                    html += '<div class="row"><div class="col-md-6"><b>Risk Category: </b></div><div class="col-md-6">' +data.risk_category+'</div></div>'; 
+                    html += '<div class="row"><div class="col-md-6"><b>Risk Status: </b></div><div class="col-md-6">' +data.risk_status+'</div></div>'; 
+                    html += '<div class="row"><div class="col-md-6"><b>Event: </b></div><div class="col-md-6">' +data.event_selected_text+'</div></div>'; 
+                    html += '<div class="row"><div class="col-md-6"><b>Vulnerability: </b></div><div class="col-md-6">' +data.impact_selected_text+'</div></div>'; 
+                    html += '<div class="row"><div class="col-md-6"><b>Impact: </b></div><div class="col-md-6">' +data.vul_selected_text+'</div></div>'; 
+                    html += '<div class="row"><div class="col-md-6"><b>Business Unit: </b></div><div class="col-md-6">' +data.business_unit+'</div></div>';
+                    html += '<div class="row"><div class="col-md-6"><b>Manager: </b></div><div class="col-md-6">' +data.risk_manager+'</div></div>';
+                    html += '<div class="row"><div class="col-md-6"><b>Risk Defination: </b></div><div class="col-md-6">' +data.risk_definition+'</div></div>';
+                    html += '</div>';
+
+                $('#risk_view_items').html(html);
+
             });
 
     })

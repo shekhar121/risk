@@ -121,3 +121,15 @@ $app->post('/delete_risk_identification', function ($request, $response, $args) 
 	//$response->header('Access-Control-Allow-Origin', '*');
 	return $response->withJson($deleteResult->getDeletedCount());
 });
+
+$app->post('/view_risk_identification', function ($request, $response, $args) {
+    // Show book identified by $args['id']
+    $collection = $this->mongodb->risk_identification;
+
+    $id = $_POST['id'];
+    $cursor = $collection->find();
+    
+    $cursor = $collection->findOne( ['_id' => new MongoDB\BSON\ObjectId($id) ]) ;
+    
+	return $response->withJson($cursor);
+});
