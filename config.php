@@ -1,2 +1,2 @@
 <?php
-$config['base_url']   = "risk.com";
+$config['base_url']   = "http://risk.com/";
