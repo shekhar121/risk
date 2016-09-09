@@ -59,17 +59,21 @@ $db = $client->selectDatabase('test');
 		<script type="text/javascript">
 		function Add(){ 
 		$(".dynamicField").append('<div class="form-group"><select id="formInput41" class="bootstrap-select" data-live-search="true" data-width="100%"><option>Technology</option></select>'+'</div>');
+        }
 		
 		/*$(".dynamicField").append( '<div class="form-group">'+ '<select id="formInput51" class="bootstrap-select" data-live-search="true" data-width="100%">														<option>Technology</option>                                                														<option>Human Resources</option>                                                 													<option>Sales and Support</ption>                                                													</select>'+ '<textarea class="form-control impact-value elastic" rows="1"></textarea>'+ '</div>'+ "<i class='btnDelete fa fa-trash'><i>"); $(".btnDelete").bind("click", Delete); 
 		}*/
 		
-		function Delete(){ var par = $(this).parent().parent(); //tr 
-			par.remove(); }
+		/*function Delete(){ var par = $(this).parent().parent(); //tr 
+			par.remove(); }*/
 
         
         
 </script>
 		</script>
+        <style type="text/css">
+            div.DTTT_container {display: none;visibility: hidden;}
+        </style>
 
         <!-- /theme JS files -->
     </head>
@@ -860,7 +864,7 @@ $( document ).ready(function() {
 <script>
 $(document).ready(function() {
     //var table = $('#risk_table').DataTable();
-    //$('div.DTTT_container').hide();
+    //$('#risk_identification_list').find('.DTTT_container').remove();
     var table;
      var table_data = $('#risk_table').DataTable( {
         ajax:  'risk_identification_list.php' 
@@ -873,6 +877,7 @@ $(document).ready(function() {
             }
          ]*/
     } );
+     //table_data.find('.DTTT_container').hide();
     console.log(table_data);
    // table_data.ajax.reload();
     ///risk_delete
@@ -1000,6 +1005,8 @@ $(document).ready(function() {
 
 
 })
+
 </script>
+
     </body>
 </html>
