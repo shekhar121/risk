@@ -58,39 +58,14 @@ $db = $client->selectDatabase('test');
 		<script type="text/javascript">
 		function Add(){ 
 		$(".dynamicField").append('<div class="form-group"><select id="formInput41" class="bootstrap-select" data-live-search="true" data-width="100%"><option>Technology</option></select>'+'</div>');
-		/*
-		$(".dynamicField").append( '<div class="form-group">'+ '<select id="formInput51" class="bootstrap-select" data-live-search="true" data-width="100%">
-														<option>Technology</option>                                                 
-														<option>Human Resources</option>                                                 
-														<option>Sales and Support</option>                                                 
-													</select>'+ '<textarea class="form-control impact-value elastic" rows="1"></textarea>'+ '</div>'+ "<i class='btnDelete fa fa-trash'><i>"); $(".btnDelete").bind("click", Delete); */
-		}
+		
+		/*$(".dynamicField").append( '<div class="form-group">'+ '<select id="formInput51" class="bootstrap-select" data-live-search="true" data-width="100%">														<option>Technology</option>                                                														<option>Human Resources</option>                                                 													<option>Sales and Support</ption>                                                													</select>'+ '<textarea class="form-control impact-value elastic" rows="1"></textarea>'+ '</div>'+ "<i class='btnDelete fa fa-trash'><i>"); $(".btnDelete").bind("click", Delete); 
+		}*/
 		
 		function Delete(){ var par = $(this).parent().parent(); //tr 
 			par.remove(); }
 
-        function copy_risk(id){
-            $.ajax({
-              method: "POST",
-              url: "http://risk.com/api/copy_risk_identification",
-              data: { id: id }
-            })
-            .done(function( data) {
-                console.log(data);
-            });
-        }
-        function delete_risk(id){ //alert('#'+id);
-            $('#'+id).remove();
-            $.ajax({
-              method: "POST",
-              url: "http://risk.com/api/delete_risk_identification",
-              data: { id: id }
-            })
-            .done(function( data) {
-                $('#'.id).hide();
-                console.log(data);
-            });
-        }
+        
         
 </script>
 		</script>
@@ -260,6 +235,29 @@ $db = $client->selectDatabase('test');
                     </div>
                 </div>
             </div>
+            <style>
+            .flashSuccess{
+    background: #449d44;
+    color: white;
+    padding: 15px 5px;
+    font-size: 20px;
+    position: absolute;
+    width: 100%;
+    text-align: center; position: relative;
+   }
+   </style>
+            <script>
+            
+
+$( document ).ready(function() {
+    $(".flashMsg").hide();
+  $(".flashMsg").slideUp(2000);
+});
+</script>
+
+<p class='flashMsg flashSuccess'> Action Successfully Executed! </p>
+
+
         </div>
         <!-- /page header -->
         <!-- Page container -->
@@ -268,7 +266,8 @@ $db = $client->selectDatabase('test');
             <div class="page-content">
                 <!-- Main content : row for risk identification list-->
                 <div class="row" id="risk_identification_list">
-                <div class="col-md-12"> 
+                    <?php //require('risk_identification_list.php'); ?>
+                    <div class="col-md-12"> 
                         <div class="panel panel-flat">
                             <div class="panel-heading">
                                 <h6 class="panel-title"><b>Manage Risk Identification</b></h6>
@@ -286,7 +285,7 @@ $db = $client->selectDatabase('test');
                             <div class="panel-body">
                                 Basic panel with panel controls
                                 <!-- Basic TableTools example -->
-                                <table class="table datatable-basic">
+                                <table class="table" id="risk_table">
                                     <thead>
                                         <tr>
                                             <th class="col-md-1">Risk ID</th>
@@ -298,45 +297,7 @@ $db = $client->selectDatabase('test');
                                         </tr>
                                     </thead>
                                     <tbody id="risk_identification_list">
-<?php
-    $collection = $db->risk_identification;
-    $cursor = $collection->find(); 
-    foreach ($cursor as $r) {
-?>
-                                        <tr id="<?php echo $r['_id'];?>">
-                                            <td><?php echo $r['_id']; // $r['risk_id'];?></td>
-                                            <td><?php echo $r['risk_definition'];?></td>
-                                            <td><?php echo $r['risk_category'];?></td>
-                                            <td>
-                                                <a href="#"><?php echo $r['business_unit'];?></a>
-                                            </td>
-                                            <td><span class="label label-info"><?php echo $r['risk_status'];?></span></td>
-                                            <td>
-                                                <ul class="icons-list text-center">
-                                                    <li>
-                                                        <button id="view" onclick="view_risk('<?php echo $r['_id'];?>')" type="button" class="btn btn-default btn-xs">
-                                                            <i class="icon-eye2"></i>
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button id="edit" onclick="edit_risk('<?php echo $r['_id'];?>')" type="button" class="btn btn-default btn-xs">
-                                                            <i class="icon-database-edit2"></i>
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button id="copy" onclick="copy_risk('<?php echo $r['_id'];?>')" type="button" class="btn btn-default btn-xs">
-                                                            <i class="icon-copy3"></i>
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button id="delete" onclick="delete_risk('<?php echo $r['_id'];?>')" type="button" class="btn btn-danger btn-xs">
-                                                            <i class="icon-cross"></i>
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-<?php } ?>                                        
+                                        
                                         <!-- <tr>
                                             <td>R.2</td>
                                             <td>Risk of sensitive information loss due to vulnerability in IT systems, resulting in financial loss of few minllion pounds. This may become serious reputation risk in short to medium term.</td>
@@ -410,6 +371,7 @@ $db = $client->selectDatabase('test');
                         </div>
                     </div>
 
+
                 </div>
                 <!-- /main content -->
                 <div class="row">
@@ -462,12 +424,19 @@ $db = $client->selectDatabase('test');
                                          <div class="form-group">
                                             <label class="control-label ">Risk Status</label>
                                             <div class="risk-status">
+  <?php
+    $collection = $db->MasterRiskStatus;
+    $cursor = $collection->find(); 
+    foreach ($cursor as $entry) {
+     
+?>
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="risk_status" class="styled" checked="checked" value="active">
-                                                    Active
+                                                    <input type="radio" name="risk_status" class="styled" checked="checked" value="<?php echo $entry['risk-status'];?>">
+                                                    <?php echo $entry['risk-status'];?>
                                                 </label>
+<?php } ?>                                                
 
-                                                <label class="radio-inline">
+                                                <!-- <label class="radio-inline">
                                                     <input type="radio" value="inactive" name="risk_status" class="styled">
                                                     Inactive
                                                 </label>
@@ -478,7 +447,7 @@ $db = $client->selectDatabase('test');
                                                      <label class="radio-inline">
                                                     <input type="radio" value="archived" name="risk_status" class="styled">
                                                     Archived
-                                                </label>
+                                                </label> -->
                                             </div>             
                                         </div>
                                      
@@ -504,9 +473,14 @@ $db = $client->selectDatabase('test');
                                         <div class="form-group"> 
                                             <label class="control-label" for="formInput51">Select Business Unit</label>                                             
                                             <select name="business_unit" id="business_unit" class="bootstrap-select" data-live-search="true" data-width="100%">
-                                                <option value="Technology">Technology</option>                                                 
-                                                <option value="Human Resources">Human Resources</option>                                                 
-                                                <option value="Sales and Support">Sales and Support</option>                                                 
+<?php
+    $collection = $db->MsterRiskBUnit;
+    $cursor = $collection->find(); 
+    $data['event'] = array();
+    foreach ($cursor as $entry) {
+        echo "<option value='". $entry['bu-name'] ."'>". $entry['bu-name'] ."</option>";
+    }
+?>                                                  
                                             </select>
                                         </div>
                                         
@@ -855,7 +829,67 @@ $db = $client->selectDatabase('test');
         <!-- /page container -->
 	
 <script>
-$(function(){
+$(document).ready(function() {
+    //var table = $('#risk_table').DataTable();
+    //$('div.DTTT_container').hide();
+    var table;
+     var table_data = $('#risk_table').DataTable( {
+        ajax:  'risk_identification_list.php' 
+        /*,
+        "columnDefs": [
+            {
+              "data": null,
+              "defaultContent": "<button class='abc'>Edit</button>",
+              "targets": -1
+            }
+         ]*/
+    } );
+    console.log(table_data);
+   // table_data.ajax.reload();
+    ///risk_delete
+    $('#risk_table').on('click','tbody button.risk_delete', function(){ //alert('gg');
+        //console.log(this); //console.log(table_data);
+        var rid = $(this).attr('rid');
+        //alert(rid);
+        $('#'+rid).remove();
+            $.ajax({
+              method: "POST",
+              url: "http://risk.com/api/delete_risk_identification",
+              data: { id: rid }
+            })
+            .done(function( data) {
+                $('#'.rid).hide();
+                console.log(data);
+                console.log(table_data);
+                table_data.ajax.reload();
+                $(".flashMsg").show();
+                $(".flashMsg").slideUp(2000);
+                //table.ajax.url( 'risk_identification.php' ).load();
+            });
+
+    })
+     $('#risk_table').on('click','tbody button.risk_copy', function(){ //alert('gg');
+        //console.log(this); //console.log(table_data);
+        var rid = $(this).attr('rid');
+        //alert(rid);
+        //$('#'+rid).remove();
+            $.ajax({
+              method: "POST",
+              url: "http://risk.com/api/copy_risk_identification",
+              data: { id: rid }
+            })
+            .done(function( data) {
+                console.log(data);
+                table_data.ajax.reload();
+                $(".flashMsg").show();
+                $(".flashMsg").slideUp(2000);
+            });
+
+    })
+
+
+        
+
     function load_list(){
             $.ajax({
                 url: "risk_identification_list.php",
@@ -876,6 +910,9 @@ $(function(){
         })
         .done(function( data) {
             console.log(data);
+            table_data.ajax.reload();
+            $(".flashMsg").show();
+            $(".flashMsg").slideUp(2000);
         });
     });
     
