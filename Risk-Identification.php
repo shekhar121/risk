@@ -1,5 +1,6 @@
 <?php
 require 'vendor/autoload.php';
+require 'config.php';
 $client = new MongoDB\Client("mongodb://139.59.177.80:27017");
 $db = $client->selectDatabase('test');
 
@@ -854,7 +855,7 @@ $(document).ready(function() {
         $('#'+rid).remove();
             $.ajax({
               method: "POST",
-              url: "http://risk.com/api/delete_risk_identification",
+              url: "<?php echo $config['base_url'];?>/api/delete_risk_identification",
               data: { id: rid }
             })
             .done(function( data) {
@@ -875,7 +876,7 @@ $(document).ready(function() {
         //$('#'+rid).remove();
             $.ajax({
               method: "POST",
-              url: "http://risk.com/api/copy_risk_identification",
+              url: "<?php echo $config['base_url'];?>/api/copy_risk_identification",
               data: { id: rid }
             })
             .done(function( data) {
@@ -905,7 +906,7 @@ $(document).ready(function() {
           console.log( $('#risk_identification').serialize() );
         $.ajax({
           method: "POST",
-          url: "http://risk.com/api/risk_identification",
+          url: "<?php echo $config['base_url'];?>/api/risk_identification",
           data: { form: $( '#risk_identification' ).serialize() }
         })
         .done(function( data) {

@@ -3,10 +3,10 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../vendor/autoload.php';
+require '../config.php';
 
 
-
-$app = new \Slim\App;
+$app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 $container['mongodb'] = function($c) {
     //$client = new MongoDB\Client("mongodb://admin:admin@139.59.177.80:27017");
@@ -14,6 +14,7 @@ $container['mongodb'] = function($c) {
     $db = $client->selectDatabase('test');
     return $db;
 };
+//echo $config['base_url'];
 /*$app->get('/hello/{name}', function (Request $request, Response $response) {
     $name = $request->getAttribute('name');
     $response->getBody()->write("Hello, $name");
